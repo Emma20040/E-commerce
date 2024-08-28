@@ -1,0 +1,16 @@
+nav div {
+    justify-content:space-between;
+    align-items: center;
+    background-color:rgb(83, 83, 169);
+    padding: 1rem;
+     
+} 
+
+.product-nav {
+    
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 1.5rem;
+    
+ }

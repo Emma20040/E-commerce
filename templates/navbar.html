@@ -1,0 +1,56 @@
+ <style>
+     .product-nav {
+        justify-content:space-between;
+        align-items: center;
+        background-color:lightgreen;
+        padding: 1rem; 
+         
+     }  
+    
+     a {
+        
+        {% comment %} display: flex;  {% endcomment %}
+        list-style:none;
+        align-items: center;
+        gap: 1.5rem;
+        
+     } 
+</style>  
+
+<nav  class="product-nav">
+<a href="\">
+    <h1> ONLINE SHOP</h1>
+</a>
+
+<div>
+    <div>
+    <ul>
+        <li><a href= "{% url 'home' %}">Home</a></li>
+        <li><a href= "{% url 'create' %}">Add Item</a></li>
+        {% comment %} <li><a href= "{% url 'login' %}">Login</a></li> {% endcomment %}
+    </ul>
+</div>
+<div >
+
+{% if user.is_authenticated %}
+
+                <!-- Display Logout link if user is logged in -->
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                
+            {% else %}
+                <!-- Display Login and Sign Up links if user is not logged in -->
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+
+            <form action="" >
+                <input  type="text" name='q' placeholder="search an item">
+                <button type="submit"> search</button>
+            
+            </form>  
+            </div>       
+</div>
+    
+
+
+</nav>

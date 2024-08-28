@@ -1,0 +1,15 @@
+
+{% block content %}
+<h3> CATEGORIES </h3>
+    <hr>
+
+    <div>
+        <a href="{% url 'home' %}">ALL</a>
+    </div>
+    {% for  category in categorys %}
+    <div>
+        <a href="{% url 'home' %}?q={{ category.name }}" >{{category.name}} </a>
+    </div>
+
+    {% endfor %}
+    {% endblock content %}

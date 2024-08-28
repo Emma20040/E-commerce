@@ -1,0 +1,50 @@
+ {% extends 'main.html' %} 
+ {%  load static %}
+ 
+ {% block content %}
+
+ <style>
+       .home-container{
+           display:grid;
+           grid-template-columns: 1fr 4fr;
+       }
+   </style>
+   
+
+
+ <div class= "home-container" >
+ <div>
+        {% include 'base/categories.html' %}
+    </div>
+    {% comment %} <div>
+      
+ <img src= "{% static 'images/shoe.jpg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
+ <p>Price: $200{{ name.price }}</p>
+
+        <img src= "{% static 'images/nike.jpg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
+        <p>Price: $30{{ name.price }}</p>
+        <img src= "{% static 'images/EPSOOG YPY Color Contrast T-Shirt - Sky Blue _ XXL.jpeg.' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
+        <p>Price: $300{{ name.price }}</p>
+        <img src= "{% static 'images/Men Rhinestone Decor Round Pointer Calendar Quartz Watch.jpeg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
+        <p>Price: $30000{{ name.price }}</p>
+   
+    </div > {% endcomment %}
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        
+            {% for product in products %}
+        <div>
+            <img src="{{product.image.url}}" alt="" width="300" height="300">
+            <p>{{product.name}}</p> 
+            <p>Price: ${{product.price}}</p>
+            <div>
+            <a href="{% url 'product-description' product.id %}">Details </a>
+            <a href="{% url 'product-update' product.id %}">Update </a>
+            <a href="{% url 'product-delete' product.id %}">Delete </a>       
+           
+        </div>
+        </div>
+        
+         {% endfor %} 
+    </div> 
+    </div>
+ {% endblock content %}
