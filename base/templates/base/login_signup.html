@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% comment %} {% if page == 'login' %} {% endcomment %}
+{% comment %} {% if page == 'login' %}  {% endcomment %}
 
 <div>
     
@@ -26,21 +26,5 @@
     <a href="{% url 'signup' %}" > Sign Up</a> 
 </div>
 
-{% comment %} {% else %}
-
-<div>
-    <form method ="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-
-        <input type="submit" value= "Register" />
-
-    </form>
-    <p> Already sign up?</p>
-    <a href="{% url 'login' %}" > login </a>
-
-</div> {% endcomment %}
-
-{% comment %} {% endif %} {% endcomment %}
 
 {% endblock content  %}

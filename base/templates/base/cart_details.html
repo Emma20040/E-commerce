@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+{%  load static %}
+
+{% block content %}
+
+<h1>Your Shopping Cart</h1>
+<style>
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next row if necessary */
+            justify-content: space-between; /* Space items evenly along the main axis */
+            list-style: none; 
+            padding: 0;
+        }
+ 
+        .product-item {
+             
+            flex: 1; /* Grow to fill available space evenly */
+             /* Limit item width to avoid overcrowding */
+            margin: 10px; /* Add spacing between items */
+            border: 1px solid #ccc; /* Add a border for visual separation */
+            padding: 10px;
+            text-align: center;
+        }
+ 
+        /* Style the "Buy Now" button */
+        .buy-now-button {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+ 
+    <div class="product-list">
+ 
+    
+ 
+    {% for product in cart_items %}
+    <div class="product-item">
+        <img src="{{product.product.image.url}}" width="300" height="300"  alt="">
+        <p>{{ product.product.name }} ({{ product.product.quantity }})</p>
+        <p>Price: ${{ product.product.price }}</p>
+        {% comment %} <a href="{% url 'remove-from-cart' item.id %}">Remove</a> {% endcomment %}
+        <a href="{% url 'remove-from-cart' product.id %}">Remove</a>
+    </div>
+    {% empty %}
+    <p>Your cart is empty.</p>
+    {% endfor %}
+ 
+    </div>
+ 
+    <p>Total Price: ${{ total_price }}</p>
+ 
+    <a href="{% url 'product-list' %}">Continue Shopping</a>
+ 
+    {%  endblock content %}

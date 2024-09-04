@@ -1,13 +1,57 @@
  {% extends 'main.html' %} 
+ {% comment %} {% include 'cart_details.html' %}
+ {%  include 'product_list' %} {% endcomment %}
  {%  load static %}
  
  {% block content %}
-
+ 
+ 
  <style>
        .home-container{
            display:grid;
            grid-template-columns: 1fr 4fr;
        }
+       
+
+        .Details {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .Update {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    
+        .Delete {
+            display: block;
+            margin-top: 10px;
+            background-color:rgba(255, 7, 7, 0.879);
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .add-to-cart {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
    </style>
    
 
@@ -16,30 +60,27 @@
  <div>
         {% include 'base/categories.html' %}
     </div>
-    {% comment %} <div>
-      
- <img src= "{% static 'images/shoe.jpg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
- <p>Price: $200{{ name.price }}</p>
 
-        <img src= "{% static 'images/nike.jpg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
-        <p>Price: $30{{ name.price }}</p>
-        <img src= "{% static 'images/EPSOOG YPY Color Contrast T-Shirt - Sky Blue _ XXL.jpeg.' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
-        <p>Price: $300{{ name.price }}</p>
-        <img src= "{% static 'images/Men Rhinestone Decor Round Pointer Calendar Quartz Watch.jpeg' %}"  width="300" height="300"  alt="shoes" class="responsive-img">
-        <p>Price: $30000{{ name.price }}</p>
-   
-    </div > {% endcomment %}
     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         
             {% for product in products %}
         <div>
+            <a href=" {% url 'image-view' product.id %}">
             <img src="{{product.image.url}}" alt="" width="300" height="300">
+            </a>
             <p>{{product.name}}</p> 
             <p>Price: ${{product.price}}</p>
             <div>
-            <a href="{% url 'product-description' product.id %}">Details </a>
-            <a href="{% url 'product-update' product.id %}">Update </a>
-            <a href="{% url 'product-delete' product.id %}">Delete </a>       
+                {% if request.user == product.seller %}
+            {% comment %} <a class="Details" href="{% url 'product-description' product.id %}">Details </a> {% endcomment %}
+            <a class="Update" href="{% url 'product-update' product.id %}">Update </a>
+            <a class="Delete" href="{% url 'product-delete' product.id %}">Delete </a>
+            {%else%}  
+            <br> 
+            <a class="add-to-cart" href="{% url 'add-to-cart' product.id %}"> Add to cart</a> 
+            <a class="Details" href="{% url 'product-description' product.id %}">Details </a> 
+            {% comment %} <a href="{% url 'add-to-cart' product.id %}"> Add to cart</a>     {% endcomment %}
+            {% endif %}
            
         </div>
         </div>
@@ -48,3 +89,4 @@
     </div> 
     </div>
  {% endblock content %}
+

@@ -1,20 +1,53 @@
- <style>
+{% comment %} {% include 'cart_details.html' %}   {% endcomment %}
+{% block content %} 
+<style>
      .product-nav {
         justify-content:space-between;
         align-items: center;
         background-color:lightgreen;
-        padding: 1rem; 
+        padding:0 1rem;
+        height:170px ; 
+        /* display: flex; */
          
      }  
     
-     a {
+      .auth {
+        /* /* display: flex ; */
         
-        {% comment %} display: flex;  {% endcomment %}
-        list-style:none;
-        align-items: center;
-        gap: 1.5rem;
+        float: right;
         
-     } 
+         /* display: block; */
+        margin-top: 0px; 
+        background-color: #4694e7d7;
+        padding: 5px 10px;
+        border-radius: 5px;
+        
+        
+    } 
+    .auth li a{
+        
+        color: #fff;
+        text-decoration: none;
+     }
+     ul li {
+        list-style:none ;
+     }
+
+    .auth li {
+        list-style:none ; 
+    }
+
+     {% comment %} h3{
+        display: flex ; 
+       flex-direction:column;
+       float: right; 
+       margin-top: 50px;
+    }  {% endcomment %}
+      h3{
+        right:15px ;
+        position: absolute ;
+        top: 80px;
+      }
 </style>  
 
 <nav  class="product-nav">
@@ -27,13 +60,16 @@
     <ul>
         <li><a href= "{% url 'home' %}">Home</a></li>
         <li><a href= "{% url 'create' %}">Add Item</a></li>
+        <li><a href= "{% url 'cart-detail' %}">Cart</a></li>
         {% comment %} <li><a href= "{% url 'login' %}">Login</a></li> {% endcomment %}
     </ul>
 </div>
 <div >
-
+<h3>@{{user.username}}</h3> 
+    <div class= "auth">
 {% if user.is_authenticated %}
 
+                
                 <!-- Display Logout link if user is logged in -->
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 
@@ -42,15 +78,18 @@
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'signup' %}">Sign Up</a></li>
             {% endif %}
-
+             </div>
             <form action="" >
                 <input  type="text" name='q' placeholder="search an item">
                 <button type="submit"> search</button>
             
             </form>  
-            </div>       
+            </div> 
+               
 </div>
     
 
 
 </nav>
+
+{%  endblock content%}

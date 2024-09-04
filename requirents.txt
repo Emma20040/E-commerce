@@ -1,0 +1,7 @@
+django
+django-tinymce  #not yet using this
+fontawesomefree  #not yet using this
+django-crispy-forms  #not yet using this
+django-recaptcha  #not yet using this
+pillow
+six

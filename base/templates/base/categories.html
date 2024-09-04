@@ -1,14 +1,39 @@
 
 {% block content %}
-<h3> CATEGORIES </h3>
+<h2> CATEGORIES </h2>
     <hr>
+    {% comment %} <style>
+    .cat {
+        display: block;
+        margin-top: 10px;
+       
+        padding: 5px 5px;
+        border-radius: 5px;
+    }
 
-    <div>
-        <a href="{% url 'home' %}">ALL</a>
+    .cats {
+        display: block;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        padding: 5px 5px;
+        border-radius: 5px;
+    }
+    </style> {% endcomment %}
+<Style>
+    .cats{
+        color: black;
+        {% comment %} font-weight: bold; {% endcomment %}
+        text-decoration: none;
+    }
+</style>
+    <div class=" cat">
+        <a href="{% url 'home' %}"><strong>ALL</strong></a>
     </div>
     {% for  category in categorys %}
     <div>
-        <a href="{% url 'home' %}?q={{ category.name }}" >{{category.name}} </a>
+        <a class="cats" href="{% url 'home' %}?q={{ category.name }}" >{{category.name}} </a>
     </div>
 
     {% endfor %}

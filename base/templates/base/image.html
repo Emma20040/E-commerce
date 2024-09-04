@@ -1,0 +1,13 @@
+{% extends 'main.html'%}
+{% block content %}
+<style>
+    .image-style{
+        text-align:center;
+    }
+</style>
+
+<main class="image-style">
+<image src="{{product.image.url}}" alt=" {{product.name}}" style="width:70%">
+</main>
+
+{% endblock content %}
