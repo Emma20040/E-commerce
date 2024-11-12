@@ -13,6 +13,7 @@ urlpatterns = [
    path('delete/<str:pk>/', views.deleteProduct, name='product-delete'),
    path('description/<str:pk>/', views.productDescription, name='product-description'),
    path('image/<str:pk>/', views.image_view, name='image-view'),
+   path('profile/', views.profile, name='profile'),
 
    #urls for the cart system
 

@@ -9,76 +9,99 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .decorators import user_not_authenticated
 from django.contrib import messages
-from .form import Signup_form
-from django.core.mail import EmailMessage, send_mail
+from .form import Signup_form, Update_user_form, UpdateProfile_form
+#email settings
+from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-from .tokens import account_activation_token
+from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
+from .tokens import account_activation_token
+
+
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Your have successfully verified your email. Now you can login your account.')
+        return redirect('login')
+    else:
+        messages.error(request, 'Activation link is invalid!')
+    
+    return redirect('home')
+
+
+# @user_not_authenticated
+# def signup_view(request):
+#     if request.method =='POST':
+#         form = Signup_form(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active=False
+#             user.save()
+#             # activateEmail(request, user, form.cleaned_data.get('email'))
+#             return redirect('home')
+        
+#         else:
+#             for error in list(form.errors.values()):
+#                 messages.error(request, error)
+        
+#     else:
+#         form = Signup_form()
+    
+#     context={"form":form}
+#     return render(request, 'base/register.html', context)
+
 
 def activateEmail(request, user, to_email):
-    mail_subjuct= 'confirm your email address'
-    message= render_to_string('base/activate_account.html', {
+    mail_subject = 'Activate your account.'
+    message = render_to_string('base/activate_account.html', {
         'user': user.username,
         'domain': get_current_site(request).domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
     })
-
-    email= EmailMessage(mail_subjuct, message, to=[to_email])
-    if email.send:
-            messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-            received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(request, f'Hi {user}, please go to you email {to_email} inbox and click on \
+            received activation link to confirm and complete the registration. Note: Check your spam folder.')
     else:
-        messages.error(request, f'problem sending confirmation email to {to_email}, check if you typed the email correctly')
+        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 
-def activate(request, uidb64, token):
-    user= get_user_model()
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    
-    except(TypeError,ValueError, OverflowError, User.DoesNotExist):
-        user= None
 
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-
-        messages.success(request, ' You have successfully veried your account, so you can now login into your account')
-        return redirect('login')
-    
-    else:
-        messages.error(request, 'activation link invalid')
-        
-    return redirect('home')
-
-@user_not_authenticated
 def signup_view(request):
-    if request.method =='POST':
+    if request.method == "POST":
         form = Signup_form(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active=False
+            # "user.is_active=False", meaning a user cannot log in until the email is verified.
+            user.is_active = False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
             return redirect('home')
-        
+
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
-        
+
     else:
         form = Signup_form()
     
     context={"form":form}
-    return render(request, 'base/register.html', context)
-
-
+    return render(request, "base/register.html", context)
 
 #old singup_view
 '''def signup_view(request):
@@ -101,12 +124,12 @@ def signup_view(request):
 
 
 def login_view(request):
-    page='login'
+    page ='login'
     if request.method=='POST':
         username= request.POST.get('Username')
         password= request.POST.get('password')
-        email = request.POST.get('email')
-        user = authenticate(request, username=username, password=password, email= email)
+        # email = request.POST.get('email')
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
@@ -118,8 +141,6 @@ def login_view(request):
     return render(request, 'base/login_signup.html', context)
 
 
-
-
 def logout_view(request):
     if request.method=="POST":
         logout(request) 
@@ -128,11 +149,29 @@ def logout_view(request):
     return render(request, 'base/logout_confirmation.html')   
 
 
+@login_required(login_url='login')
 def profile(request):
-    pass
+    if request.method == 'POST':
+        user_form = Update_user_form(request.POST, instance= request.user)
+        profile_form =UpdateProfile_form(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated successfully')
+            return redirect('home')
+        
+        else:
+            user_form= Update_user_form(instance=request.user)
+            profile_form= UpdateProfile_form(instance=request.user.profile)
+        
+        context= {'user_form':user_form, 'profile_form':profile_form}
+        return render(request, 'base/profile.html', context)
 
 
+#home view
 def product_view(request):
+    # product=Product.objects.all().order_by("-created_at")
     q= request.GET.get('q', '')
     # products=Product.objects.filter(category__name__icontains=q)
     # q = request.GET.get('q', '') if request.GET.get('q') != None else''
@@ -154,7 +193,8 @@ def creatProduct(request):
             form.save()
             return redirect('home')
         return HttpResponse('not valid')
-        
+    # new line added to diplay product on using the last created element as the first item on the home page
+      
     context= {'form':form}
     return render(request, 'base/create_product.html', context)
 
@@ -222,6 +262,7 @@ def add_to_cart(request, product_id):
     user = request.user
     item = OrderItem(user = user, product = product)
     item.save()
+    messages.success(request, 'item has been added to cart')
     return redirect('cart-detail')
 
 

@@ -1,0 +1,10 @@
+{% extends 'base/main.html' %}
+{% block title %} Your Profile {% endblock title %}
+{% block content %}
+
+<p>Username: {{ user.username }}</p>
+<p>Bio: {{ user.profile.bio }}</p>
+<p>Location: {{ user.profile.email }}</p>
+<p>Birth Date: {{ user.profile.image}}</p>
+
+{% endblock coontent %}

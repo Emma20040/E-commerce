@@ -1,7 +1,20 @@
 {% comment %} {% include 'cart_details.html' %}   {% endcomment %}
 {% block content %} 
-<style>
-     .product-nav {
+{% comment %} <style> {% endcomment %}
+    
+    {% comment %} .nav-links {
+        display: flex;
+        align-items: center;
+    height: auto !important;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    font-size: 1.5rem;
+    width: 100%;
+      background-color:red;
+       }  {% endcomment %}
+    
+      {% comment %} .product-nav {
         justify-content:space-between;
         align-items: center;
         background-color:lightgreen;
@@ -9,9 +22,8 @@
         height:170px ; 
         /* display: flex; */
          
-     }  
-    
-      .auth {
+        
+        .auth {
         /* /* display: flex ; */
         
         float: right;
@@ -26,51 +38,57 @@
     } 
     .auth li a{
         
-        color: #fff;
-        text-decoration: none;
-     }
-     ul li {
-        list-style:none ;
-     }
+    color: #fff;
+    text-decoration: none;
+}
+ul li {
+    list-style:none ;
+}
 
-    .auth li {
-        list-style:none ; 
-    }
-
-     {% comment %} h3{
-        display: flex ; 
+.auth li {
+    list-style:none ; 
+}
+ h3{
+    display: flex ; 
        flex-direction:column;
        float: right; 
        margin-top: 50px;
-    }  {% endcomment %}
-      h3{
+    }   {% endcomment %}
+    {% comment %} h3{
         right:15px ;
         position: absolute ;
         top: 80px;
-      }
-</style>  
+    }
+    .ul{
+        height: auto !important;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+}  {% endcomment %}
+{% comment %} </style>   {% endcomment %}
 
-<nav  class="product-nav">
+{% comment %} <nav  class="product-nav">
 <a href="\">
     <h1> ONLINE SHOP</h1>
 </a>
 
 <div>
-    <div>
+    <div class="nav-links">
     <ul>
-        <li><a href= "{% url 'home' %}">Home</a></li>
-        <li><a href= "{% url 'create' %}">Add Item</a></li>
-        <li><a href= "{% url 'cart-detail' %}">Cart</a></li>
+        <li><a href= "{% url 'home' %}" class="nav-link">Home</a></li>
+        <li><a href= "{% url 'create' %}" class="nav-link">Add Item</a></li>
+        <li><a href= "{% url 'cart-detail' %}" class="nav-link">Cart</a></li>
         {% comment %} <li><a href= "{% url 'login' %}">Login</a></li> {% endcomment %}
-    </ul>
+    {% comment %} </ul>
 </div>
 <div >
 <h3>@{{user.username}}</h3> 
     <div class= "auth">
-{% if user.is_authenticated %}
+{% if user.is_authenticated %} {% endcomment %}
 
                 
-                <!-- Display Logout link if user is logged in -->
+                {% comment %} <!-- Display Logout link if user is logged in -->
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 
             {% else %}
@@ -84,12 +102,162 @@
                 <button type="submit"> search</button>
             
             </form>  
-            </div> 
+            </div>  {% endcomment %}
                
-</div>
+{% comment %} </div>
     
 
 
+</nav>  {% endcomment %}
+<style>
+/* Navbar Container */
+.product-nav {
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* Brand Styling */
+.product-nav .brand {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Navbar Links */
+.nav-container {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    gap: 200px;
+}
+
+/* Horizontal Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    font-size:1.5rem
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #ff6347; /* Optional hover color */
+}
+
+/* User Section Styling */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Auth Links */
+.auth {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+.auth li {
+    list-style: none;
+}
+
+.auth a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Search Form */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-form input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.search-form button {
+    padding: 5px 10px;
+    background-color: #ff6347;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.search-form button:hover {
+    background-color: #e5533d;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .product-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .user-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+</style>
+<nav class="product-nav">
+    <a href="{% url 'home' %}" class="brand">
+        <h1>ONLINE SHOP</h1>
+    </a>
+
+    <div class="nav-container">
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+            <li><a href="{% url 'create' %}" class="nav-link">Add Item</a></li>
+            <li><a href="{% url 'cart-detail' %}" class="nav-link">Cart</a></li>
+        </ul>
+
+        <div class="user-section">
+            <h3>@{{user.username}}</h3>
+            <ul class="auth">
+                {% if user.is_authenticated %}
+                
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+
+            <form action="" class="search-form">
+                <input type="text" name="q" placeholder="Search an item">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
 </nav>
+
 
 {%  endblock content%}

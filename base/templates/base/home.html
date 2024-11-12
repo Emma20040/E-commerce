@@ -1,6 +1,5 @@
  {% extends 'main.html' %} 
- {% comment %} {% include 'cart_details.html' %}
- {%  include 'product_list' %} {% endcomment %}
+ 
  {%  load static %}
  
  {% block content %}
@@ -71,7 +70,7 @@
             <p>{{product.name}}</p> 
             <p>Price: ${{product.price}}</p>
             <div>
-                {% if request.user == product.seller %}
+                {% if request.user == user_id %}
             {% comment %} <a class="Details" href="{% url 'product-description' product.id %}">Details </a> {% endcomment %}
             <a class="Update" href="{% url 'product-update' product.id %}">Update </a>
             <a class="Delete" href="{% url 'product-delete' product.id %}">Delete </a>

@@ -13,7 +13,7 @@ class Product(models.Model):
     price= models.DecimalField(max_digits=20, decimal_places=3)
     description= models.TextField(max_length=2000)
     category= models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
-    seller= models.ForeignKey(User, on_delete=models.CASCADE)
+    # seller= models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name
@@ -49,5 +49,13 @@ class OrderItem(models.Model):
         return f"{self.quantity} x {self.product}"
 
 
+class Profile(models.Model):
+    user= models.OneToOneField(User, on_delete=models.CASCADE)
+    image= models.ImageField(upload_to=('static/images/'))
+    email = models.EmailField()
+    first_name= models.CharField(max_length=100)
+    last_name= models.CharField(max_length=100)
+    boi= models.TextField(max_length=300, blank=True, null=True)
 
-# Create your models here.
+    def __str__(self):
+        return f'{self.user.username} Profile'

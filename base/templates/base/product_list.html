@@ -4,18 +4,18 @@
  {% block content %}
  <h1>Product Catalog</h1>
  <style>
-    /* Add CSS styles for flex container and items */
     .product-list {
         display: flex;
         flex-wrap: wrap; /* Allow items to wrap to the next row if necessary */
-        justify-content: 20px ; /* Space items evenly along the main axis */
-        list-style: none; /* Remove list styles */
+        justify-content: space-between; /* Space items evenly along the main axis */
+        list-style: none; 
         padding: 0;
     }
 
     .product-item {
+         
         flex: 1; /* Grow to fill available space evenly */
-        max-width: 30%; /* Limit item width to avoid overcrowding */
+         /* Limit item width to avoid overcrowding */
         margin: 10px; /* Add spacing between items */
         border: 1px solid #ccc; /* Add a border for visual separation */
         padding: 10px;
